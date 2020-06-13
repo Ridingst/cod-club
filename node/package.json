@@ -1,0 +1,13 @@
+{
+  "name": "Hillcroft_Cod_Tracker",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Thomas Ridings <mail@thomasridings.com>",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

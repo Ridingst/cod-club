@@ -1,0 +1,12 @@
+.env
+*.ipynb
+package-lock.json
+.python-version
+
+players_data.js
+/data/all_players_data.json
+
+node_modules/
+
+.vscode/
+.DS_Store

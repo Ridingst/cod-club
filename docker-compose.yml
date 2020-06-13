@@ -1,0 +1,90 @@
+version: "3.0"
+services:
+    web:
+        image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/hillcroft-cod-club:latest
+        container_name: web
+        build: 
+            context: ./node/.
+        volumes:
+            - data:/usr/src/app/data
+        ports:
+            - "8080:8080"
+        networks:
+            - backend
+        depends_on: [python]
+        environment: 
+            - PORT=${PORT}
+        logging:
+            driver: awslogs
+            options: 
+              awslogs-group: cod-club
+              awslogs-region: eu-west-1
+              awslogs-stream-prefix: web
+    
+    python:
+        image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/python-scraper:latest
+        container_name: python
+        build: 
+            context: ./python/.
+        volumes:
+            - data:/home/data
+        environment: 
+            - COD_API_USER=${COD_API_USER}
+            - COD_API_PASSWORD=${COD_API_PASSWORD}
+            - MONGO_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+        networks:
+            - backend
+        logging:
+            driver: awslogs
+            options: 
+                awslogs-group: cod-club
+                awslogs-region: eu-west-1
+                awslogs-stream-prefix: python
+
+    mongodb:
+        image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest
+        container_name: mongo
+        build:
+            context: ./mongo/.  
+        networks: 
+            - backend
+        volumes:
+            - mongodb_data_container:/data/db 
+        environment: 
+                - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+                - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+        logging:
+            driver: awslogs
+            options: 
+                awslogs-group: cod-club
+                awslogs-region: eu-west-1
+                awslogs-stream-prefix: mongodb
+
+    mongoku:
+        image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongoku
+        container_name: mongoku
+        build:
+            context: ./mongo/mongoku/.
+        depends_on: 
+            - mongodb
+        networks: 
+            - backend
+        ports:
+            - "3100:3100"
+        environment: 
+            - MONGOKU_DEFAULT_HOST="${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017" # attempts to connect before docker is ready. Redo in the UI to fix.
+        logging:
+            driver: awslogs
+            options: 
+                awslogs-group: cod-club
+                awslogs-region: eu-west-1
+                awslogs-stream-prefix: mongoku
+
+volumes:
+    data:
+    mongodb_data_container:
+
+networks:
+    backend:
+    

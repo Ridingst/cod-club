@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 8080;
 const path = require('path')
+
+const port = process.env.PORT || 8080;
 
 app.use('/images', express.static(path.join(__dirname + '/html/static/images/')))
 
@@ -14,4 +15,4 @@ app.get('/players_data.js', function(req, res) {
     res.sendFile(path.join(__dirname + '/data/players_data.js'));
 });
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`Listening at http://localhost:${port}`))

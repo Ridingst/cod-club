@@ -1,6 +1,5 @@
 .env
 *.ipynb
-package-lock.json
 .python-version
 
 players_data.js

@@ -14,12 +14,6 @@ services:
         depends_on: [python]
         environment: 
             - PORT=${PORT}
-        logging:
-            driver: awslogs
-            options: 
-              awslogs-group: cod-club
-              awslogs-region: eu-west-1
-              awslogs-stream-prefix: web
     
     python:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/python-scraper:latest
@@ -35,16 +29,9 @@ services:
             - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
         networks:
             - backend
-        logging:
-            driver: awslogs
-            options: 
-                awslogs-group: cod-club
-                awslogs-region: eu-west-1
-                awslogs-stream-prefix: python
-
     mongodb:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest
-        container_name: mongo
+        container_name: mongodb
         build:
             context: ./mongo/.  
         networks: 
@@ -54,12 +41,6 @@ services:
         environment: 
                 - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
                 - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-        logging:
-            driver: awslogs
-            options: 
-                awslogs-group: cod-club
-                awslogs-region: eu-west-1
-                awslogs-stream-prefix: mongodb
 
     mongoku:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongoku
@@ -73,13 +54,8 @@ services:
         ports:
             - "3100:3100"
         environment: 
-            - MONGOKU_DEFAULT_HOST="${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017" # attempts to connect before docker is ready. Redo in the UI to fix.
-        logging:
-            driver: awslogs
-            options: 
-                awslogs-group: cod-club
-                awslogs-region: eu-west-1
-                awslogs-stream-prefix: mongoku
+            - MONGOKU_DEFAULT_HOST=${MONGOKU_DEFAULT}
+            - WAIT_HOSTS=mongodb:27017
 
 volumes:
     data:

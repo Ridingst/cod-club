@@ -1,18 +1,16 @@
 # Hillcroft Cod Club
 
-## Get running
+## Get running locally
 
 `docker-compose build`
 `docker-compose up`
 
-## Deploy new version
+## Get running locally
 
-Do the changes locall then run `docker-compose build` followed by `docker-compose push`.
-You may need to log in to AWS. Check with the ECR registry for easy instructions.
-
-## Start the cluster
-`ecs-cli up --keypair RidingsPersonal --size 1 --instance-role cod-club-instance --instance-type m5a.large --spot-price 0.08 --vpc vpc-0349447b2f8569d76 --subnets subnet-0f9ae94906aadf37f,subnet-0de326328091b4ea3,subnet-0ce0db3d990db0e95,subnet-0c45498ccfc1f250c --verbose`
-
+SSH into the server
+`git pull`
+`docker-compose build`
+`docker-compose up -d`
 
 ## Weird stuff
 The python scraper image is used for different purposes by overwriting the Docker entry comand.

@@ -6,8 +6,9 @@ from pymongo import MongoClient
 # Get environment variables
 COD_USER = config('COD_API_USER')
 COD_PASSWORD = config('COD_API_PASSWORD')
-MONGO_USERNAME = config('MONGO_USERNAME')
-MONGO_PASSWORD = config('MONGO_PASSWORD')
+MONGO_USERNAME = config('MONGO_INITDB_ROOT_USERNAME')
+MONGO_PASSWORD = config('MONGO_INITDB_ROOT_PASSWORD')
+MONGO_HOST = config('MONGO_HOST')
 
 def getPlayerName(player):
     return str(str(player.username).split("#")[0])
@@ -38,7 +39,7 @@ async def calcScores(stats):
 
 async def getStats(client):
     friends = await getFriends(client)
-    date = datetime.datetime.now().isoformat()
+    date = datetime.datetime.now()
     print(date)
     resp = list()
     
@@ -49,7 +50,7 @@ async def getStats(client):
         friendObject['date'] = date
         friendObject['username'] = getPlayerName(friend)
         
-        logging.debug('Completed API query for for user: ' + friendObject['username'] + ' (' + friendObject['date'] + ')')
+        logging.debug('Completed API query for for user: ' + friendObject['username'] + ' (' + friendObject['date'].isoformat() + ')')
 
         resp.append(friendObject)
     
@@ -61,11 +62,13 @@ def writeToFile(stats, filepath):
     return 'done'
 
 async def dbUpload(stats):
-    client = MongoClient('mongo:27017', username=MONGO_USERNAME, password=MONGO_PASSWORD)
-    db = client.users
+    client = MongoClient(MONGO_HOST, username=MONGO_USERNAME, password=MONGO_PASSWORD)
+    db = client['user_data']
+    coll = db['stats']
+
     for friend in stats:
-        db[friend['username']].stats.insert_one(friend)
-        logging.debug('Written results for user: ' + friend['username'] + ' (' + friend['date'] + ')')
+        coll.insert_one(friend)
+
     return
 
 async def main():

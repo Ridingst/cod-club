@@ -8,12 +8,16 @@ services:
         volumes:
             - data:/usr/src/app/data
         ports:
-            - "80:80"
+            - "${PORT}:${PORT}"
         networks:
             - backend
         depends_on: [python]
         environment: 
             - PORT=${PORT}
+            - MONGO_HOST=mongodb:27017
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+            - COD_PLAYERS=${COD_PLAYERS}
     
     python:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/python-scraper:latest
@@ -25,8 +29,10 @@ services:
         environment: 
             - COD_API_USER=${COD_API_USER}
             - COD_API_PASSWORD=${COD_API_PASSWORD}
-            - MONGO_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-            - MONGO_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+            - MONGO_HOST=mongodb:27017
+            - WAIT_HOSTS=mongodb:27017
         networks:
             - backend
     mongodb:

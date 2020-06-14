@@ -3,6 +3,8 @@ from callofduty import Mode, Platform, Title
 from decouple import config
 from pymongo import MongoClient
 
+logging.basicConfig(level=logging.INFO)
+
 # Get environment variables
 COD_USER = config('COD_API_USER')
 COD_PASSWORD = config('COD_API_PASSWORD')
@@ -40,7 +42,7 @@ async def calcScores(stats):
 async def getStats(client):
     friends = await getFriends(client)
     date = datetime.datetime.now()
-    print(date)
+    logging.info('Run time: ' + str(date))
     resp = list()
     
     for friend in friends:
@@ -50,7 +52,7 @@ async def getStats(client):
         friendObject['date'] = date
         friendObject['username'] = getPlayerName(friend)
         
-        logging.debug('Completed API query for for user: ' + friendObject['username'] + ' (' + friendObject['date'].isoformat() + ')')
+        logging.info('Completed API query for user: ' + friendObject['username'] + ' (' + friendObject['date'].isoformat() + ')')
 
         resp.append(friendObject)
     
@@ -68,14 +70,19 @@ async def dbUpload(stats):
 
     for friend in stats:
         coll.insert_one(friend)
-
+        logging.debug('Completed DB write for user: ' + friend['username'] + ' (' + friend['date'].isoformat() + ')')
     return
 
 async def main():
-    print('Starting...')
+    logging.info('Starting...')
     client = await callofduty.Login(COD_USER, COD_PASSWORD)
     stats = await getStats(client)
     await dbUpload(stats)
-    print('Finished.')
+    logging.info('Finished.')
 
-asyncio.run(main())
+try:
+    asyncio.run(main())
+except Exception as e:
+    logging.warning('ERROR RUNNING UPDATE')
+    logging.warning(e)
+

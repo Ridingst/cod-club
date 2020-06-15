@@ -43,12 +43,15 @@ app.get('/players_data', function(req, res) {
         if (err) throw err;
         var dbo = db.db("user_data");
         var stats = dbo.collection('stats');
+
+        console.log('connection established')
     
         stats.aggregate([
             {$match: {'username': {$in: usernames}}},            
             {$group: {'_id': '$username', 'stats': {$last: '$stats.calcStats'}, 'date': {$last: '$date'}}}
         ]).toArray(function(err, data){
             if(err) throw err;
+            console.log('returning data')
             res.send(data)
         })
     });
@@ -70,7 +73,7 @@ app.get('/last_updated', function(req, res) {
                 var dt = new Date(doc.date);
                 var dt_string = `${
                         dt.getDate().toString().padStart(2, '0') }/${
-                        (dt.getMonth()+1).toString().padStart(2, '0')}/${
+                        (dt.getMonth()+1).toString().padStart(2, '0') }/${
                         dt.getFullYear().toString().padStart(4, '0') } ${
                         dt.getHours().toString().padStart(2, '0') }:${
                         dt.getMinutes().toString().padStart(2, '0') }:${

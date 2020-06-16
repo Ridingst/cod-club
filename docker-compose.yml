@@ -33,6 +33,7 @@ services:
             - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
             - MONGO_HOST=mongodb:27017
             - WAIT_HOSTS=mongodb:27017
+            - RUN_SCRAPER=${RUN_SCRAPER}
         networks:
             - backend
 

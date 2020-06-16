@@ -35,6 +35,24 @@ services:
             - WAIT_HOSTS=mongodb:27017
         networks:
             - backend
+
+    dash:
+        container_name: dash
+        build: 
+            context: ./dash/.
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+            - MONGO_HOST=mongodb:27017
+            - WAIT_HOSTS=mongodb:27017
+            - DASH_HOST=0.0.0.0
+            - DASH_PORT=8000
+            - COD_PLAYERS=${COD_PLAYERS}
+        networks:
+            - backend
+        ports:
+            - "8000:8000"
+
     mongodb:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest
         container_name: mongodb
@@ -45,8 +63,12 @@ services:
         volumes:
             - mongodb_data_container:/data/db 
         environment: 
-                - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-                - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+        ports:
+            - "27017:27017"
+
+
 
     mongoku:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongoku

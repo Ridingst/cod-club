@@ -200,4 +200,5 @@ def serveLayout():
 app.layout = serveLayout
 
 if __name__ == '__main__':
+    print('starting')
     app.run_server(host=DASH_HOST, port=DASH_PORT, debug=True)

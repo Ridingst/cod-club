@@ -46,12 +46,12 @@ services:
             - MONGO_HOST=mongodb:27017
             - WAIT_HOSTS=mongodb:27017
             - DASH_HOST=0.0.0.0
-            - DASH_PORT=8000
+            - DASH_PORT=8880
             - COD_PLAYERS=${COD_PLAYERS}
         networks:
             - backend
         ports:
-            - "8000:8000"
+            - "8880:8880"
 
     mongodb:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest

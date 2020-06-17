@@ -37,7 +37,7 @@ def serveLiveChart():
             'wins': '$stats.calcStats.wins',
             'winPerc': '$stats.calcStats.winPerc',
             'top5': "$stats.calcStats.topFive",
-            'top5Perc': "$stats.calcStats.topTenPerc",
+            'top5Perc': "$stats.calcStats.topFivePerc",
             'top10': "$stats.calcStats.topTen",
             'top10Perc': "$stats.calcStats.topTenPerc",
             'kills': "$stats.calcStats.kills",

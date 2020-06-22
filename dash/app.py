@@ -16,6 +16,8 @@ MONGO_HOST = config('MONGO_HOST', default='localhost:27017')
 DASH_HOST = config('DASH_HOST', default='localhost')
 DASH_PORT = config('DASH_PORT', default='8050')
 
+TITLE = str(config('TITLE')) + "Cod Club"
+
 COD_PLAYERS = config('COD_PLAYERS').split(',')
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -194,7 +196,7 @@ def serveLiveChart():
 
 def serveLayout():
     fig = serveLiveChart()
-    return html.Div(children=[html.H1(children='Hillcroft Cod Club'), fig])
+    return html.Div(children=[html.H1(children=TITLE), fig])
 
 
 app.layout = serveLayout

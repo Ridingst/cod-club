@@ -3,5 +3,5 @@ while $RUN_SCRAPER
 do
   echo "Running API query"
   python3 get_all_data.py --log=INFO
-  sleep 15m
+  sleep 24h
 done

@@ -24,7 +24,7 @@ async def getFriends(client):
 async def getPlayerStats(player):
     resp = dict()
     fullStats = await player.profile(Title.ModernWarfare, Mode.Warzone)
-    resp['calcStats'] = await calcScores(resp[fullStats])
+    resp['calcStats'] = await calcScores(fullStats)
     return resp
 
 async def calcScores(stats):

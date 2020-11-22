@@ -70,7 +70,8 @@ passport.use(new BnetStrategy({
     } else {
       const user = new User();
       user.battletag = profile.battletag;
-      user.battlenet = profile.id;
+      user.battlenet = profile.id
+      user.tokens = [];
       user.tokens.push({
         kind: 'bnet',
         accessToken,

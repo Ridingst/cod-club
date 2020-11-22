@@ -9,7 +9,8 @@ $(document).ready(() => {
       responsive: true,
       ajax: {
           url: '/players_data',
-          dataSrc: ''
+          dataSrc: '',
+          scrollX: false
       },
       columns: [
           {name: "username", data: '_id'},

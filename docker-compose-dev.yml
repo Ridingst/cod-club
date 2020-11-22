@@ -15,18 +15,8 @@ services:
             - backend
         depends_on: [mongodb]
         entrypoint: nodemon index.js
-        environment: 
-            - PORT=${PORT}
-            - MONGO_HOST=mongodb:27017
-            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-            - COD_PLAYERS=${COD_PLAYERS_HC}
-            - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-            - GOOGLE_SECRET=${GOOGLE_SECRET}
-            - SESSION_SECRET=${SESSION_SECRET}
-            - BATTLE_CLIENT_ID=${BATTLE_CLIENT_ID}
-            - BATTLE_SECRET=${BATTLE_SECRET}
-            - BASE_URL=${BASE_URL}
+        env_file:
+            - .env
     mongodb:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest
         container_name: mongodb

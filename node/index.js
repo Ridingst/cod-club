@@ -21,17 +21,6 @@ const multer = require('multer');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
-if(process.env.DEVELOPMENT == 'True'){
-    console.log('Loading from .env')
-    
-    var dotenv = require('dotenv');
-    var result = dotenv.config({ path: path.resolve(__dirname, '../.env') });
-    
-    if (result.error) {
-        throw result.error
-    }
-}
-
 const port = process.env.PORT || 8080;
 
 /**
@@ -123,8 +112,10 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
 app.use(function(req, res, next) {
   if(req.user && usernames.includes(req.user.battletag.split('#')[0])){
     res.locals.user = req.user;
+    res.locals.valid_user = true;
   } else {
-    res.locals.valid_user = false
+    res.locals.user = req.user;
+    res.locals.valid_user = false;
   }
   next();
 });

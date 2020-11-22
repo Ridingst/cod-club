@@ -14,8 +14,7 @@ var usernames = process.env.COD_PLAYERS.split(',')
  */
 exports.index = (req, res) => {
   res.render('home', {
-    title: 'Home',
-    user: req.user
+    title: 'Home'
   });
 };
 

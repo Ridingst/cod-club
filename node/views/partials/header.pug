@@ -1,0 +1,18 @@
+header
+    a(href='/')
+        img(alt='Hillcroft Lacrosse Logo' src='/images/hillcroft_lacrosse_club_logo.png' height='150')
+    h1 Rhys Morgan Metric Tracker
+    if locals.user
+        if locals.valid_user
+            p Welcome back #{locals.user.battletag}
+            p
+                a(href='#')
+                    i View Events &rarr;
+                a(href='#')
+                    b Submt Result &rarr;
+        else
+            p #{locals.user.battletag} is not on the list. Please contact Ridings.
+    else
+        p
+            a(href='/auth/battle')
+                i  Sign In with Battle Net &rarr;

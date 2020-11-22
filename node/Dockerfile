@@ -16,7 +16,7 @@ COPY package*.json ./
 RUN npm i
 
 # Bundle app source
-# COPY . .
+COPY . .
 
 EXPOSE 80
 CMD [ "node", "index.js" ]

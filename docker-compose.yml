@@ -18,6 +18,9 @@ services:
             - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
             - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
             - COD_PLAYERS=${COD_PLAYERS_HC}
+            - SESSION_SECRET=${SESSION_SECRET}
+            - BATTLE_CLIENT_ID=${BATTLE_CLIENT_ID}
+            - BATTLE_SECRET=${BATTLE_SECRET}
     
     python:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/python-scraper:latest

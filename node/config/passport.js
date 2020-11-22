@@ -58,7 +58,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
 passport.use(new BnetStrategy({
   clientID: process.env.BATTLE_CLIENT_ID,
   clientSecret: process.env.BATTLE_SECRET,
-  callbackURL: "http://localhost/auth/battle/callback",
+  callbackURL: process.env.BASE_URL + "/auth/battle/callback",
   region: "eu",
   passReqToCallback: true
 }, function(req, accessToken, refreshToken, profile, done) {

@@ -26,6 +26,7 @@ services:
             - SESSION_SECRET=${SESSION_SECRET}
             - BATTLE_CLIENT_ID=${BATTLE_CLIENT_ID}
             - BATTLE_SECRET=${BATTLE_SECRET}
+            - BASE_URL=${BASE_URL}
     mongodb:
         image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest
         container_name: mongodb

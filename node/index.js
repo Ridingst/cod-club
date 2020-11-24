@@ -107,29 +107,35 @@ app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist
 app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
 
 /**
- * Adding middleware for some useful pug contexts
- */
-app.use(function(req, res, next) {
-  if(req.user && usernames.includes(req.user.battletag.split('#')[0])){
-    res.locals.user = req.user;
-    res.locals.valid_user = true;
-  } else {
-    res.locals.user = req.user;
-    res.locals.valid_user = false;
-  }
-  next();
-});
-
-/**
  * Controllers (route handlers).
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
+const eventsController = require('./controllers/events');
 
 /**
  * API keys and Passport configuration.
  */
 const passportConfig = require('./config/passport');
+
+/**
+ * Adding middleware for some useful pug contexts
+ */
+app.use(function(req, res ,next) {
+
+  if(passportConfig.isAdmin){
+    res.locals.admin = true;
+  }
+  
+  if(passportConfig.isUser){
+    res.locals.valid_user = true;
+  }
+  
+  if(req.user){
+    res.locals.user = req.user
+  }
+  next();
+})
 
 
 /**
@@ -137,10 +143,6 @@ const passportConfig = require('./config/passport');
  */
 app.use('/images', express.static(path.join(__dirname + '/html/static/images')))
 app.use('/css', express.static(path.join(__dirname + '/html/static/css')))
-
-/*app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/html/index.html'));
-});*/
 
 app.get('/players_data.js', function(req, res) {
     res.set('Cache-control', `no-store, no-cache, max-age=0`);
@@ -155,11 +157,21 @@ app.get('/last_updated', homeController.last_updated);
 app.get('/players_data', homeController.player_data);
 app.get('/logout', userController.logout);
 
+app.get('/events', passportConfig.isUser, eventsController.getEvents);
+app.get('/events/:eventId/enter', passportConfig.isUser, eventsController.getEnterEvent)
+app.get('/events/admin', passportConfig.isAdmin, eventsController.getEventsAdmin);
+app.post('/events/admin/new', passportConfig.isAdmin, eventsController.postEvents);
+
+app.get('/results', function(req, res) {
+  res.sendFile(path.join(__dirname + '/results.html'));
+});
+
+
 /**
  * OAuth authentication routes. (Sign in)
  */
 app.get('/auth/battle', passport.authenticate('bnet'));
-app.get('/auth/battle/callback', passport.authenticate('bnet', { failureRedirect: '/login'}), (req, res) => {
+app.get('/auth/battle/callback', passport.authenticate('bnet', { failureRedirect: '/'}), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 
@@ -179,7 +191,7 @@ if (process.env.NODE_ENV === 'development') {
 /**
  * Final catch all instead of a 404
  */
-app.get('*', (req, res) =>{res.redirect('/')});
+app.get('*', (req, res) =>{console.log('ERROR 404'); res.redirect('/')});
 
 /**
  * Start Express server.

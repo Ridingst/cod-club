@@ -11,6 +11,9 @@ var BnetStrategy = require('passport-bnet').Strategy;
 const _ = require('lodash');
 const moment = require('moment');
 
+const ADMIN_USERS = process.env.ADMIN_USERS.split(',')
+const COD_PLAYERS = process.env.COD_PLAYERS.split(',')
+
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
@@ -84,16 +87,22 @@ passport.use(new BnetStrategy({
   });
 }));
 
-
-
 /**
  * Login Required middleware.
  */
-exports.isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
+exports.isUser = (req, res, next) => {
+  if (req.isAuthenticated() && req.user && COD_PLAYERS.includes(req.user.battletag.split('#')[0])) {
+    return next();
+  } 
+  console.log('Error authenticating')
+  res.redirect('/');
+};
+
+exports.isAdmin = (req, res, next) => {
+  if(req.isAuthenticated() && req.user && ADMIN_USERS.includes(req.user.battletag.split('#')[0])) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/');
 };
 
 /**

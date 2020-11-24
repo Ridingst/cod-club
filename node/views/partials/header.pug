@@ -6,10 +6,13 @@ header
         if locals.valid_user
             p Welcome back #{locals.user.battletag}
             p
-                a(href='#')
+                a(href='/events')
                     i View Events &rarr;
                 a(href='#')
                     b Submt Result &rarr;
+                if locals.admin
+                    a(href='/events/admin')
+                        i Admin
         else
             p #{locals.user.battletag} is not on the list. Please contact Ridings.
     else

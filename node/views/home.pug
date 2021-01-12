@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  main.inner.cover(role='main')
+    .data-table-container(style='padding: auto;')
+      table#table.table.data-table.display.responsive.nowrap
+        thead
+          tr(role='row')
+            th Username
+            th Wins
+            th kdRatio
+            th.min-desktop Win %
+            th.min-desktop Top 5
+            th.min-desktop Top 5 %
+            th.min-desktop Top 10
+            th.min-phone-s Top 10 %
+            th.min-phone-s Kills
+            th.min-desktop Kills/Game
+            th.min-desktop Games Played
+            th.min-desktop Avg Score
+      a#lastupdated Last updated: 

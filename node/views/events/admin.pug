@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  section
+    form(id='new-event-form', action='/events/admin/new' method='POST')
+      header
+        h2 Create New Event
+      input(type='hidden', name='_csrf', value=_csrf)
+      label(for='inputName') Event Name:
+      input#input1(type='text' name='inputName' size='20' placeholder='Name', required)
+      label(for='inputDesc') Description:
+      textarea(name='inputDescription' cols='28' rows='2', placeholder='Enter a description of the event', required)
+      button(type='submit') Submit
+

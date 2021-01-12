@@ -1,0 +1,40 @@
+version: "3.0"
+services:
+    web:
+        image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/hillcroft-cod-club:latest
+        container_name: web
+        build: 
+            context: ./node/.
+        volumes:
+            - ./node/:/usr/src/app
+            - /usr/src/app/node_modules/
+            - data:/usr/src/app/data
+        ports:
+            - "${PORT}:${PORT}"
+        networks:
+            - backend
+        depends_on: [mongodb]
+        entrypoint: nodemon index.js
+        env_file:
+            - .env
+    mongodb:
+        image: 876831597101.dkr.ecr.eu-west-1.amazonaws.com/mongodb:latest
+        container_name: mongodb
+        build:
+            context: ./mongo/.  
+        networks: 
+            - backend
+        volumes:
+            - mongodb_data_container:/data/db 
+        environment: 
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+        ports:
+            - "27017:27017"
+volumes:
+    data:
+    mongodb_data_container:
+
+networks:
+    backend:
+    

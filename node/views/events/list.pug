@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  section    
+    for event in events
+      aside
+        img(alt=event.name src=event.image height='150')
+        h3= event.name
+        p= event.playerCount
+        p= event.description
+        p
+          a(href='/events/' + event._id + '/enter' target='_blank')
+            em
+              | Enter Event
+              | &nearr;
